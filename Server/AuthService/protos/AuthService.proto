@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package AuthService;
+option go_package = "AuthService/protos/AuthService.proto";
+
+
+service AuthService{
+    rpc Register(AuthRequest) returns (AuthResponse);
+    rpc Login(AuthRequest) returns (AuthResponse);
+}
+
+// Реквест
+// UserDetails необходим в случае 
+// если потребуется расширить бд и добавить новые поля
+message AuthRequest{
+    message User{
+        string Login = 1;
+        string Password = 2;
+        
+        message UserDetails{
+            string Nickname = 1;
+        }
+
+        UserDetails details = 3;
+    }
+    User user = 1;
+}
+
+// Ответ сервера, содержит статус ответа,
+// токен сессии и ответ сервера 
+// (на случай если потребуется вывести сообщение об ошибке)
+message AuthResponse{
+    Statuses status = 1;
+    string sessionToken = 2; 
+    string responseMessage = 3;
+}
+
+enum Statuses{
+    ERROR = 0;
+    SUCCESS = 1;
+}
+

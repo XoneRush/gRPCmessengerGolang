@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package ChatService;
+option go_package = "ChatService/protos/ChatService.proto";
+
+
+service ChatService{
+    rpc CreateChat(Chat) returns (Void);
+    rpc SendMessage(stream Msg) returns (stream Msg);
+    rpc AddMember(Member) returns (Msg);
+    rpc RemoveMember(Member) returns (Msg);
+    rpc ListMembers(Chat) returns (stream Member);
+    rpc ListMsgs(Chat) returns (stream Msg);
+}
+
+message Chat{
+    repeated Member ListOfMembers = 1;
+    string Name = 2;
+    string DateOfCreation = 3;
+}
+
+message Msg{
+    int32 Src = 1;
+    int32 Dst = 2;
+    string Data = 3;
+}
+
+message Member{
+    int32 ChatID = 1;
+    int32 UserID = 2;  
+    string Role = 3; 
+}
+
+message Void {}
+
+enum Statuses{
+    ERROR = 0;
+    SUCCESS = 1;
+}
