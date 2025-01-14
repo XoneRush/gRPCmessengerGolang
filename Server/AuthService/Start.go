@@ -5,9 +5,6 @@ package main
 // В-1
 
 import (
-	"AuthService/model"
-	pb "AuthService/protos"
-	"AuthService/web"
 	"bufio"
 	"encoding/json"
 	"fmt"
@@ -15,6 +12,10 @@ import (
 	"net"
 	"os"
 	"time"
+
+	"github.com/XoneRush/gRPCmessengerGolang/Server/AuthService/model"
+	pb "github.com/XoneRush/gRPCmessengerGolang/Server/AuthService/protos"
+	"github.com/XoneRush/gRPCmessengerGolang/Server/AuthService/web"
 
 	"github.com/hashicorp/go-hclog"
 	"google.golang.org/grpc"

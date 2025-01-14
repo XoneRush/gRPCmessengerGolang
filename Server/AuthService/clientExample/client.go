@@ -2,8 +2,9 @@ package main
 
 import (
 	"context"
+	"fmt"
 
-	pb "github.com/XoneRush/gRPCmessengerGolang/AuthService/protos"
+	pb "github.com/XoneRush/gRPCmessengerGolang/Server/AuthService/protos"
 
 	"github.com/hashicorp/go-hclog"
 	"google.golang.org/grpc"
@@ -35,6 +36,9 @@ func main() {
 	}
 
 	resp, err := client.Login(context.Background(), &pb.AuthRequest{User: &user})
+	if err != nil {
+		fmt.Print(err.Error())
+	}
 
 	token := resp.SessionToken
 
