@@ -1,11 +1,12 @@
 package web
 
 import (
-	"AuthService/model"
-	pb "AuthService/protos"
 	"context"
 	"database/sql"
 	"time"
+
+	"github.com/XoneRush/gRPCmessengerGolang/Server/AuthService/model"
+	pb "github.com/XoneRush/gRPCmessengerGolang/Server/AuthService/protos"
 
 	"github.com/hashicorp/go-hclog"
 )
