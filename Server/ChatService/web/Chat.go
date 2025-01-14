@@ -131,7 +131,6 @@ func (a *App) RemoveMember(ctx context.Context, member *pb.Member) (*pb.Msg, err
 // Необязательно но желательно
 // Stream, возвращают множество объектов в поток
 func (a *App) ListMembers(chat *pb.Chat, listMembers grpc.ServerStreamingServer[pb.Member]) error {
-
 	return nil
 }
 

@@ -1,8 +1,9 @@
 package main
 
 import (
-	pb "AuthService/protos"
 	"context"
+
+	pb "github.com/XoneRush/gRPCmessengerGolang/AuthService/protos"
 
 	"github.com/hashicorp/go-hclog"
 	"google.golang.org/grpc"
