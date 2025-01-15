@@ -5,15 +5,23 @@ import (
 
 	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
+	//pb "github.com/XoneRush/gRPCmessengerGolang/Server/AuthService"
 )
 
+var cli forms.Client
+
 func main() {
-	cli := forms.Client{
-		App:       tview.NewApplication(),
-		IndexForm: tview.NewForm(),
+	cli = forms.Client{
+		App:          tview.NewApplication(),
+		IndexForm:    tview.NewForm(),
+		RegisterForm: tview.NewForm(),
+		Pages:        tview.NewPages(),
+		UserData:     forms.UserData{},
 	}
 
-	if err := cli.App.SetRoot(tview.NewBox(), true).EnableMouse(true).Run(); err != nil {
+	Startup(&cli)
+
+	if err := cli.App.SetRoot(cli.Pages, true).EnableMouse(true).Run(); err != nil {
 		panic(err)
 	}
 
@@ -24,4 +32,9 @@ func main() {
 		return event
 	})
 
+}
+
+func Startup(c *forms.Client) {
+	c.AddIndexForm()
+	c.AddRegisterForm()
 }
