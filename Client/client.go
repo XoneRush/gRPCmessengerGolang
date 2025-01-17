@@ -2,6 +2,7 @@ package main
 
 import (
 	"Client/forms"
+	"Client/web"
 
 	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
@@ -15,6 +16,8 @@ func main() {
 		App:          tview.NewApplication(),
 		IndexForm:    tview.NewForm(),
 		RegisterForm: tview.NewForm(),
+		LoginForm:    tview.NewForm(),
+		ChatForm:     tview.NewForm(),
 		Pages:        tview.NewPages(),
 		UserData:     forms.UserData{},
 	}
@@ -35,6 +38,10 @@ func main() {
 }
 
 func Startup(c *forms.Client) {
+	c.AuthClient = web.ConnectWithAuth()
+
 	c.AddIndexForm()
 	c.AddRegisterForm()
+	c.AddLoginForm()
+	c.AddChatForm()
 }
