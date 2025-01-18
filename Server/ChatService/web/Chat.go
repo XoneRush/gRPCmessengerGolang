@@ -1,8 +1,8 @@
 package web
 
 import (
-	"ChatService/model"
-	pb "ChatService/protos"
+	"github.com/XoneRush/gRPCmessengerGolang/Server/ChatService/model"
+	pb "github.com/XoneRush/gRPCmessengerGolang/Server/ChatService/protos"
 	"context"
 	"database/sql"
 	"io"

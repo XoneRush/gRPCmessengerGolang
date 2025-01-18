@@ -1,8 +1,8 @@
 package main
 
 import (
-	"ChatService/model"
-	"ChatService/web"
+	"github.com/XoneRush/gRPCmessengerGolang/Server/ChatService/model"
+	"github.com/XoneRush/gRPCmessengerGolang/Server/ChatService/web"
 	"bufio"
 	"encoding/json"
 	"fmt"
@@ -11,7 +11,7 @@ import (
 	"os"
 	"time"
 
-	pb "ChatService/protos"
+	pb "github.com/XoneRush/gRPCmessengerGolang/Server/ChatService/protos"
 
 	"github.com/hashicorp/go-hclog"
 	"google.golang.org/grpc"

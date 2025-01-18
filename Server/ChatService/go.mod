@@ -1,4 +1,4 @@
-module ChatService
+module github.com/XoneRush/gRPCmessengerGolang/Server/ChatService
 
 go 1.23.1
 
