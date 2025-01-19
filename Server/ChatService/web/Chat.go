@@ -1,13 +1,14 @@
 package web
 
 import (
-	"github.com/XoneRush/gRPCmessengerGolang/Server/ChatService/model"
-	pb "github.com/XoneRush/gRPCmessengerGolang/Server/ChatService/protos"
 	"context"
 	"database/sql"
 	"io"
 	"log"
 	"sync"
+
+	"github.com/XoneRush/gRPCmessengerGolang/Server/ChatService/model"
+	pb "github.com/XoneRush/gRPCmessengerGolang/Server/ChatService/protos"
 
 	"github.com/hashicorp/go-hclog"
 	"google.golang.org/grpc"
@@ -87,11 +88,25 @@ func (a *App) SendMessage(stream pb.ChatService_SendMessageServer) error {
 			a.mu.Unlock()
 			return err
 		}
-		a.log.Info("Message!", "data", msg.Data, "from", msg.Src)
+		err = a.isMemberInChat(int(msg.Src), int(msg.Dst))
+		if err != nil {
+			a.log.Info("Error!", "err", err.Error())
+			continue
+		}
+
+		a.log.Info("Message!", "data", msg.Data, "from", msg.Dst)
 
 		//Пересылка сообщений другим клиентам
 		a.mu.Lock()
 		for _, clientStream := range a.clients[chatID] {
+			nickname, err := a.GetNicknameFromDB(int(msg.Src))
+			if err != nil {
+				log.Printf("Error sending message to client: %v", err)
+			}
+
+			str := nickname + ": " + msg.Data
+			msg.Data = str
+
 			if err := clientStream.Send(msg); err != nil {
 				log.Printf("Error sending message to client: %v", err)
 			}

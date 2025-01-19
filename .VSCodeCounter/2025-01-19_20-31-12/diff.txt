@@ -1,0 +1,72 @@
+Date : 2025-01-19 20:31:12
+Directory : c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Client
+Total : 29 files,  -1412 codes, -144 comments, -263 blanks, all -1819 lines
+
+Languages
++------------------+------------+------------+------------+------------+------------+
+| language         | files      | code       | comment    | blank      | total      |
++------------------+------------+------------+------------+------------+------------+
+| Go Checksum File |          3 |         42 |          0 |         -1 |         41 |
+| Go Module File   |          3 |         -8 |          0 |         -3 |        -11 |
+| Protocol Buffers |          2 |        -59 |         -6 |        -18 |        -83 |
+| Go               |         21 |     -1,387 |       -138 |       -241 |     -1,766 |
++------------------+------------+------------+------------+------------+------------+
+
+Directories
++----------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                                 | files      | code       | comment    | blank      | total      |
++----------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                                    |         29 |     -1,412 |       -144 |       -263 |     -1,819 |
+| . (Files)                                                                                                            |          3 |        199 |          1 |         18 |        218 |
+| ..                                                                                                                   |         23 |     -1,841 |       -170 |       -343 |     -2,354 |
+| ..\Server                                                                                                            |         23 |     -1,841 |       -170 |       -343 |     -2,354 |
+| ..\Server\AuthService                                                                                                |         12 |       -839 |        -86 |       -166 |     -1,091 |
+| ..\Server\AuthService (Files)                                                                                        |          3 |       -119 |         -9 |        -20 |       -148 |
+| ..\Server\AuthService\clientExample                                                                                  |          1 |        -35 |          0 |        -13 |        -48 |
+| ..\Server\AuthService\model                                                                                          |          3 |        -60 |         -1 |        -16 |        -77 |
+| ..\Server\AuthService\protos                                                                                         |          3 |       -503 |        -54 |        -81 |       -638 |
+| ..\Server\AuthService\web                                                                                            |          2 |       -122 |        -22 |        -36 |       -180 |
+| ..\Server\ChatService                                                                                                |         11 |     -1,002 |        -84 |       -177 |     -1,263 |
+| ..\Server\ChatService (Files)                                                                                        |          3 |       -103 |         -3 |        -19 |       -125 |
+| ..\Server\ChatService\model                                                                                          |          3 |        -48 |         -1 |        -14 |        -63 |
+| ..\Server\ChatService\protos                                                                                         |          3 |       -616 |        -48 |        -92 |       -756 |
+| ..\Server\ChatService\web                                                                                            |          2 |       -235 |        -32 |        -52 |       -319 |
+| forms                                                                                                                |          2 |        197 |         19 |         49 |        265 |
+| web                                                                                                                  |          1 |         33 |          6 |         13 |         52 |
++----------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++----------------------------------------------------------------------------------------------------------------------+------------------+------------+------------+------------+------------+
+| filename                                                                                                             | language         | code       | comment    | blank      | total      |
++----------------------------------------------------------------------------------------------------------------------+------------------+------------+------------+------------+------------+
+| c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Client\client.go                                 | Go               |         43 |          1 |         12 |         56 |
+| c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Client\forms\forms.go                            | Go               |        125 |         10 |         32 |        167 |
+| c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Client\forms\operations.go                       | Go               |         72 |          9 |         17 |         98 |
+| c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Client\go.mod                                    | Go Module File   |         28 |          0 |          5 |         33 |
+| c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Client\go.sum                                    | Go Checksum File |        128 |          0 |          1 |        129 |
+| c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Client\web\Connection.go                         | Go               |         33 |          6 |         13 |         52 |
+| c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Server\AuthService\Start.go                      | Go               |        -52 |         -9 |        -15 |        -76 |
+| c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Server\AuthService\clientExample\client.go       | Go               |        -35 |          0 |        -13 |        -48 |
+| c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Server\AuthService\go.mod                        | Go Module File   |        -19 |          0 |         -4 |        -23 |
+| c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Server\AuthService\go.sum                        | Go Checksum File |        -48 |          0 |         -1 |        -49 |
+| c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Server\AuthService\model\Connect.go              | Go               |        -21 |         -1 |         -7 |        -29 |
+| c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Server\AuthService\model\Properties_model.go     | Go               |        -10 |          0 |         -2 |        -12 |
+| c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Server\AuthService\model\User_model.go           | Go               |        -29 |          0 |         -7 |        -36 |
+| c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Server\AuthService\protos\AuthService.pb.go      | Go               |       -326 |        -19 |        -51 |       -396 |
+| c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Server\AuthService\protos\AuthService.proto      | Protocol Buffers |        -28 |         -6 |        -10 |        -44 |
+| c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Server\AuthService\protos\AuthService_grpc.pb.go | Go               |       -149 |        -29 |        -20 |       -198 |
+| c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Server\AuthService\web\Auth.go                   | Go               |        -59 |         -8 |        -18 |        -85 |
+| c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Server\AuthService\web\operations.go             | Go               |        -63 |        -14 |        -18 |        -95 |
+| c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Server\ChatService\Start.go                      | Go               |        -48 |         -3 |        -14 |        -65 |
+| c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Server\ChatService\go.mod                        | Go Module File   |        -17 |          0 |         -4 |        -21 |
+| c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Server\ChatService\go.sum                        | Go Checksum File |        -38 |          0 |         -1 |        -39 |
+| c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Server\ChatService\model\Chat_model.go           | Go               |        -17 |          0 |         -5 |        -22 |
+| c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Server\ChatService\model\Connect.go              | Go               |        -21 |         -1 |         -7 |        -29 |
+| c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Server\ChatService\model\Properties_model.go     | Go               |        -10 |          0 |         -2 |        -12 |
+| c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Server\ChatService\protos\ChatService.pb.go      | Go               |       -339 |        -13 |        -52 |       -404 |
+| c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Server\ChatService\protos\ChatService.proto      | Protocol Buffers |        -31 |          0 |         -8 |        -39 |
+| c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Server\ChatService\protos\ChatService_grpc.pb.go | Go               |       -246 |        -35 |        -32 |       -313 |
+| c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Server\ChatService\web\Chat.go                   | Go               |       -110 |        -20 |        -26 |       -156 |
+| c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Server\ChatService\web\Operation.go              | Go               |       -125 |        -12 |        -26 |       -163 |
+| Total                                                                                                                |                  |     -1,412 |       -144 |       -263 |     -1,819 |
++----------------------------------------------------------------------------------------------------------------------+------------------+------------+------------+------------+------------+

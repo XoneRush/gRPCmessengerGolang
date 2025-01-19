@@ -72,6 +72,10 @@ func (a *Auth) Login(ctx context.Context, req *pb.AuthRequest) (*pb.AuthResponse
 	return returnSuccses(token), nil
 }
 
+// func (c *Auth) GetID(ctx context.Context, in *pb.AuthRequest) (*pb.AuthResponse, error) {
+
+// }
+
 func returnErr(err error) (*pb.AuthResponse, error) {
 	return &pb.AuthResponse{Status: pb.Statuses_ERROR, SessionToken: "", ResponseMessage: err.Error()}, err
 }

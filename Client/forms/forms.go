@@ -1,14 +1,21 @@
 package forms
 
 import (
-	pb "github.com/XoneRush/gRPCmessengerGolang/Server/AuthService/protos"
+	"context"
+	"io"
+	"log"
+	"strconv"
+	"time"
+
+	auth "github.com/XoneRush/gRPCmessengerGolang/Server/AuthService/protos"
+	chat "github.com/XoneRush/gRPCmessengerGolang/Server/ChatService/protos"
 	"github.com/rivo/tview"
 )
 
 type Client struct {
-	App        *tview.Application
-	AuthClient pb.AuthServiceClient
-	//ChatClient *pb.ChatServiceClient - доделать позже
+	App          *tview.Application
+	AuthClient   auth.AuthServiceClient
+	ChatClient   chat.ChatServiceClient
 	Pages        *tview.Pages
 	IndexForm    *tview.Form
 	RegisterForm *tview.Form
@@ -19,6 +26,7 @@ type Client struct {
 }
 
 type UserData struct {
+	ID       int
 	Nickname string
 	Login    string
 	Password string
@@ -91,6 +99,7 @@ func (c *Client) AddLoginForm() {
 	c.LoginForm.AddButton("Login", func() {
 		resp := c.Login()
 		textArea.SetText(resp, false)
+		c.UserData.ID, _ = strconv.Atoi(c.GetIdFromToken())
 	})
 
 	c.LoginForm.AddButton("Back", func() {
@@ -101,23 +110,52 @@ func (c *Client) AddLoginForm() {
 }
 
 func (c *Client) AddChatForm() {
+	var msg string = ""
+	var dst int = 1
+	//var chatName string
 	textArea := tview.NewTextArea()
 	textArea.SetSize(10, 50)
+	textArea.SetBorder(true)
 	c.ChatForm.AddFormItem(textArea)
+
+	stream, _ := c.ChatClient.SendMessage(context.Background())
+	waitc := make(chan struct{})
+
+	go func() {
+		for {
+			in, err := stream.Recv()
+			if err == io.EOF {
+				close(waitc)
+				return
+			}
+			if err != nil {
+				log.Println("Failed to receive a note", false)
+			}
+
+			//msgs
+			currText := textArea.GetText()
+			textArea.SetText(currText+in.Data+"       "+time.Now().Format(time.TimeOnly)+"\n", false)
+
+		}
+	}()
 
 	//Выбрать имя чата (имя получателя)
 	c.ChatForm.AddInputField("Which chat?", "", 20, nil, func(name string) {
-
+		//chatName = name
+		dst, _ = strconv.Atoi(name)
 	})
 
 	//Само сообщение
 	c.ChatForm.AddInputField("Message", "", 20, nil, func(message string) {
-
+		msg = message
 	})
 
 	//Отправить
 	c.ChatForm.AddButton("Send!", func() {
 		//логика отправки
+		if err := stream.Send(&chat.Msg{Dst: int32(dst), Src: int32(c.UserData.ID), Data: msg}); err != nil {
+			textArea.SetText("error!", false)
+		}
 	})
 
 	c.ChatForm.AddButton("Back", func() {

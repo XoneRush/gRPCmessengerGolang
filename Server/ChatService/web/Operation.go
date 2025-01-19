@@ -1,10 +1,11 @@
 package web
 
 import (
-	"github.com/XoneRush/gRPCmessengerGolang/Server/ChatService/model"
-	pb "github.com/XoneRush/gRPCmessengerGolang/Server/ChatService/protos"
 	"database/sql"
 	"errors"
+
+	"github.com/XoneRush/gRPCmessengerGolang/Server/ChatService/model"
+	pb "github.com/XoneRush/gRPCmessengerGolang/Server/ChatService/protos"
 )
 
 func (a *App) CreateChatInDB(name string, members []model.Member_model) error {
@@ -121,6 +122,38 @@ func (a *App) checkExistance(m model.Member_model) error {
 	if err == sql.ErrNoRows {
 		a.log.Error(err.Error())
 		return errors.New("user does not exist")
+	}
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *App) GetNicknameFromDB(id int) (string, error) {
+	stmt := "SELECT nickname FROM users WHERE userid = $1"
+
+	var nickname string
+	row := a.DB.QueryRow(stmt, id)
+	err := row.Scan(&nickname)
+	if err == sql.ErrNoRows {
+		a.log.Error(err.Error())
+		return "", errors.New("user does not exist")
+	}
+	if err != nil {
+		return "", err
+	}
+	return nickname, nil
+}
+
+func (a *App) isMemberInChat(uid int, chatid int) error {
+	stmt := "SELECT chatid FROM members WHERE userid = $1 AND chatid = $2"
+
+	var c int
+	row := a.DB.QueryRow(stmt, uid, chatid)
+	err := row.Scan(&c)
+	if err == sql.ErrNoRows {
+		a.log.Error(err.Error())
+		return errors.New("User cant send msg to this chat")
 	}
 	if err != nil {
 		return err

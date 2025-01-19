@@ -38,8 +38,16 @@ func main() {
 }
 
 func Startup(c *forms.Client) {
-	c.AuthClient = web.ConnectWithAuth()
+	ConnectWithServices(c)
+	AddForms(c)
+}
 
+func ConnectWithServices(c *forms.Client) {
+	c.AuthClient = web.ConnectWithAuth()
+	c.ChatClient = web.ConnectWithChats()
+}
+
+func AddForms(c *forms.Client) {
 	c.AddIndexForm()
 	c.AddRegisterForm()
 	c.AddLoginForm()

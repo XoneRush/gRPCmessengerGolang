@@ -1,6 +1,7 @@
 package web
 
 import (
+	"database/sql"
 	"errors"
 	"log"
 	"time"
@@ -61,17 +62,33 @@ func (a *Auth) Authenticate(login string, password string) error {
 // На выход: jwt токен
 func (a *Auth) GenerateToken(user model.User_model) (string, error) {
 	token := jwt.New(jwt.SigningMethodHS256)
+	uid, err := a.GetIdByLogin(user.GetLogin())
+	if err != nil {
+		return "error in generating token", err
+	}
 
 	//Помещение в токен информации о пользователи и времени пока токен будет валидным
 	claims := token.Claims.(jwt.MapClaims)
+	claims["uid"] = uid
 	claims["ulogin"] = user.GetLogin()
 	claims["nickname"] = user.GetNickname()
 	claims["exp"] = time.Now().Add(a.Duration).Unix()
 
 	tokenString, err := token.SignedString([]byte(a.Secret))
 	if err != nil {
-		return "", err
+		return "error in generating token", err
 	}
 
 	return tokenString, nil
+}
+
+func (a *Auth) GetIdByLogin(login string) (int, error) {
+	stmt := "SELECT userid FROM users WHERE login = $1"
+	var uid int
+
+	row := a.DB.QueryRow(stmt, login)
+	if row.Scan(&uid) == sql.ErrNoRows {
+		return 0, errors.New("wrong login")
+	}
+	return uid, nil
 }

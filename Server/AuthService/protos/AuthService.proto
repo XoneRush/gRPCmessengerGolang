@@ -7,6 +7,7 @@ option go_package = "AuthService/protos/AuthService.proto";
 service AuthService{
     rpc Register(AuthRequest) returns (AuthResponse);
     rpc Login(AuthRequest) returns (AuthResponse);
+    rpc GetID(AuthRequest) returns (AuthResponse);
 }
 
 // Реквест

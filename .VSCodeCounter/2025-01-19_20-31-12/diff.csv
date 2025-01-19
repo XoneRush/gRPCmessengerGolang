@@ -1,0 +1,31 @@
+"filename", "language", "Go", "Go Checksum File", "Go Module File", "Protocol Buffers", "comment", "blank", "total"
+"c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Client\client.go", "Go", 43, 0, 0, 0, 1, 12, 56
+"c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Client\forms\forms.go", "Go", 125, 0, 0, 0, 10, 32, 167
+"c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Client\forms\operations.go", "Go", 72, 0, 0, 0, 9, 17, 98
+"c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Client\go.mod", "Go Module File", 0, 0, 28, 0, 0, 5, 33
+"c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Client\go.sum", "Go Checksum File", 0, 128, 0, 0, 0, 1, 129
+"c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Client\web\Connection.go", "Go", 33, 0, 0, 0, 6, 13, 52
+"c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Server\AuthService\Start.go", "Go", -52, 0, 0, 0, -9, -15, -76
+"c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Server\AuthService\clientExample\client.go", "Go", -35, 0, 0, 0, 0, -13, -48
+"c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Server\AuthService\go.mod", "Go Module File", 0, 0, -19, 0, 0, -4, -23
+"c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Server\AuthService\go.sum", "Go Checksum File", 0, -48, 0, 0, 0, -1, -49
+"c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Server\AuthService\model\Connect.go", "Go", -21, 0, 0, 0, -1, -7, -29
+"c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Server\AuthService\model\Properties_model.go", "Go", -10, 0, 0, 0, 0, -2, -12
+"c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Server\AuthService\model\User_model.go", "Go", -29, 0, 0, 0, 0, -7, -36
+"c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Server\AuthService\protos\AuthService.pb.go", "Go", -326, 0, 0, 0, -19, -51, -396
+"c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Server\AuthService\protos\AuthService.proto", "Protocol Buffers", 0, 0, 0, -28, -6, -10, -44
+"c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Server\AuthService\protos\AuthService_grpc.pb.go", "Go", -149, 0, 0, 0, -29, -20, -198
+"c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Server\AuthService\web\Auth.go", "Go", -59, 0, 0, 0, -8, -18, -85
+"c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Server\AuthService\web\operations.go", "Go", -63, 0, 0, 0, -14, -18, -95
+"c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Server\ChatService\Start.go", "Go", -48, 0, 0, 0, -3, -14, -65
+"c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Server\ChatService\go.mod", "Go Module File", 0, 0, -17, 0, 0, -4, -21
+"c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Server\ChatService\go.sum", "Go Checksum File", 0, -38, 0, 0, 0, -1, -39
+"c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Server\ChatService\model\Chat_model.go", "Go", -17, 0, 0, 0, 0, -5, -22
+"c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Server\ChatService\model\Connect.go", "Go", -21, 0, 0, 0, -1, -7, -29
+"c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Server\ChatService\model\Properties_model.go", "Go", -10, 0, 0, 0, 0, -2, -12
+"c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Server\ChatService\protos\ChatService.pb.go", "Go", -339, 0, 0, 0, -13, -52, -404
+"c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Server\ChatService\protos\ChatService.proto", "Protocol Buffers", 0, 0, 0, -31, 0, -8, -39
+"c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Server\ChatService\protos\ChatService_grpc.pb.go", "Go", -246, 0, 0, 0, -35, -32, -313
+"c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Server\ChatService\web\Chat.go", "Go", -110, 0, 0, 0, -20, -26, -156
+"c:\Users\Alexander\Documents\fances_desktop\Разное\ПП_ЧМ\Kayukov_KR\Server\ChatService\web\Operation.go", "Go", -125, 0, 0, 0, -12, -26, -163
+"Total", "-", -1387, 42, -8, -59, -144, -263, -1819
