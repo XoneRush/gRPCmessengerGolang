@@ -17,7 +17,7 @@ type UserClaims struct {
 	jwt.Claims
 }
 
-// Запрос на регистрацию
+// Запрос на регистрацию на сервер
 func (c *Client) Register() string {
 	//Из заполненных данных формируется структура для запроса
 	user := auth.AuthRequest_User{
@@ -60,7 +60,6 @@ func (c *Client) Login() string {
 	//fmt.Println(resp.ResponseMessage, " ", resp.Status)
 }
 
-// Решить проблему с декодированием
 func (c *Client) GetIdFromToken() string {
 	claims, err := c.parseToken()
 	if err != nil {
@@ -82,9 +81,10 @@ func (c *Client) GetNicknameFromToken() string {
 	return nick
 }
 
+// Парсинг свойств сделать
 func (c *Client) parseToken() (jwt.MapClaims, error) {
 	token, err := jwt.Parse(c.token, func(token *jwt.Token) (interface{}, error) {
-		return []byte("aa0d31e33016976acc20c470ae5caff027d10c3b94ae9c218011a396c1ec5ebacb56530c3efd71ee86bbf52e9433423186c2b4e0fc3c11948afe28c995fdc373"), nil
+		return []byte("-"), nil
 	})
 	if err != nil {
 		return nil, err
