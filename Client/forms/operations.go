@@ -1,14 +1,19 @@
 package forms
 
 import (
+	"bufio"
 	"context"
+	"encoding/json"
 	"errors"
+	"fmt"
 	"io"
 	"log"
+	"os"
 	"strconv"
 	"time"
 
 	auth "github.com/XoneRush/gRPCmessengerGolang/Server/AuthService/protos"
+	ChatService_proto "github.com/XoneRush/gRPCmessengerGolang/Server/ChatService/protos"
 	"github.com/golang-jwt/jwt/v5"
 	//chat "github.com/XoneRush/gRPCmessengerGolang/Server/ChatService/protos"
 )
@@ -18,6 +23,10 @@ type UserClaims struct {
 	login    string `json:"ulogin"`
 	nickname string `json:"nickname"`
 	jwt.Claims
+}
+
+type Properties struct {
+	Secret string `json:"secret"`
 }
 
 // Запрос на регистрацию на сервер
@@ -40,7 +49,6 @@ func (c *Client) Register() string {
 
 	c.token = resp.SessionToken
 	return resp.ResponseMessage
-	//fmt.Println(resp.ResponseMessage, " ", resp.Status)
 }
 
 func (c *Client) Login() string {
@@ -60,7 +68,6 @@ func (c *Client) Login() string {
 
 	c.token = resp.SessionToken
 	return resp.ResponseMessage
-	//fmt.Println(resp.ResponseMessage, " ", resp.Status)
 }
 
 func (c *Client) GetIdFromToken() string {
@@ -87,7 +94,7 @@ func (c *Client) GetNicknameFromToken() string {
 // Парсинг свойств сделать
 func (c *Client) parseToken() (jwt.MapClaims, error) {
 	token, err := jwt.Parse(c.token, func(token *jwt.Token) (interface{}, error) {
-		return []byte("d19b71f8942a1d89b1bbb1481e4df6bb770d1c746d41fe61bbf870b8252cebb0bc2f9b3718a25ba5f68119e49bc0b24e8e4b56236b3bce53f7b138f63b1846f1"), nil
+		return []byte(c.Properties.Secret), nil
 	})
 	if err != nil {
 		return nil, err
@@ -125,10 +132,59 @@ func (c *Client) StartMessaging() {
 	}()
 }
 
-// func (c *Client) GetChatList() []ChatData{
-// 	stream, err := c.ChatClient.
+// Заполняет список чатов для юзера
+func (c *Client) GetChatList() error {
+	c.chat.Clear()
 
-// 	for {
-// 		chat, err := stream
-// 	}
-// }
+	var chats []ChatData
+	stream, err := c.ChatClient.GetChatList(context.Background(), &ChatService_proto.Member{
+		UserID: int32(c.UserData.ID),
+	})
+	if err != nil {
+		return err
+	}
+
+	for {
+		chat, err := stream.Recv()
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			return err
+		}
+
+		chats = append(chats, ChatData{
+			Name: chat.GetName(),
+			ID:   chat.GetChatID(),
+		})
+	}
+
+	c.Chats = chats
+	return nil
+}
+
+func (c *Client) refresh() {
+	c.AddChatList()
+	c.AddFlex()
+}
+
+func (c *Client) ClearMsgs() {
+	c.chat.Clear()
+	c.time.Clear()
+}
+
+func (c *Client) ParseProperties(path string) Properties {
+	file, err := os.Open(path)
+	if err != nil {
+		log.Fatal("Cant open prop file")
+	}
+	reader := bufio.NewReader(file)
+
+	decoder := json.NewDecoder(reader)
+	var props Properties
+	err = decoder.Decode(&props)
+	if err != nil {
+		fmt.Println("error in decoding")
+	}
+	return props
+}

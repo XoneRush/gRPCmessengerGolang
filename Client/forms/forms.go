@@ -19,7 +19,9 @@ type Client struct {
 	LoginForm    *tview.Form
 	ChatList     *tview.List
 	UserData     UserData
-	token        string
+
+	token      string
+	Properties Properties
 
 	Chats []ChatData
 
@@ -56,6 +58,7 @@ func (c *Client) AddIndexForm() {
 	})
 
 	c.IndexForm.AddButton("Chats", func() {
+		c.refresh()
 		c.StartMessaging()
 		c.Pages.SwitchToPage("Chats")
 	})
@@ -121,21 +124,22 @@ func (c *Client) AddLoginForm() {
 }
 
 func (c *Client) AddChatList() {
+	err := c.GetChatList()
+	if err != nil {
+		c.chat.SetText(err.Error())
+	}
+
 	c.ChatList.ShowSecondaryText(false)
 	c.ChatList.SetBorder(true)
 	c.ChatList.SetTitle("Chat list")
 
-	c.ChatList.InsertItem(0, "FR, god i hate those lists", "", 0, func() {
-		c.dst = 1
-	})
-	c.ChatList.InsertItem(0, "2", "", 0, func() {
+	for _, chat := range c.Chats {
+		c.ChatList.AddItem(chat.Name, "", 0, func() {
+			c.dst = int(chat.ID)
+			c.ClearMsgs()
+		})
+	}
 
-	})
-	c.ChatList.InsertItem(0, "3", "", 0, func() {
-
-	})
-
-	// flex.AddItem(c.ChatList, 0, 1, true)
 	c.Pages.AddPage("Chat list", c.ChatList, true, false)
 }
 
@@ -148,7 +152,7 @@ func (c *Client) AddFlex() {
 	chatflex.SetBorder(true)
 	chatflex.SetTitle("Chat")
 
-	c.chat = c.AddChatArea(30, 50)
+	c.chat = c.AddChatArea(70, 50)
 	c.time = tview.NewTextView()
 
 	//chatflex
@@ -165,7 +169,6 @@ func (c *Client) AddFlex() {
 	flex.AddItem(c.ChatList, 0, 1, true)
 
 	c.Pages.AddPage("Chats", flex, true, false)
-
 }
 
 func (c *Client) AddChatArea(rows int, cols int) *tview.TextView {

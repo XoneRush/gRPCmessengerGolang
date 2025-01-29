@@ -11,6 +11,8 @@ import (
 
 var cli forms.Client
 
+const properties_path = "./properties/properties.json"
+
 func main() {
 	cli = forms.Client{
 		App:          tview.NewApplication(),
@@ -19,6 +21,7 @@ func main() {
 		LoginForm:    tview.NewForm(),
 		Pages:        tview.NewPages(),
 		ChatList:     tview.NewList(),
+		Chats:        []forms.ChatData{},
 		UserData:     forms.UserData{},
 	}
 
@@ -38,6 +41,7 @@ func main() {
 }
 
 func Startup(c *forms.Client) {
+	c.ParseProperties(properties_path)
 	ConnectWithServices(c)
 	AddForms(c)
 }
