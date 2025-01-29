@@ -134,7 +134,9 @@ func (c *Client) StartMessaging() {
 
 // Заполняет список чатов для юзера
 func (c *Client) GetChatList() error {
-	c.chat.Clear()
+	if c.chat != nil {
+		c.ChatList.Clear()
+	}
 
 	var chats []ChatData
 	stream, err := c.ChatClient.GetChatList(context.Background(), &ChatService_proto.Member{

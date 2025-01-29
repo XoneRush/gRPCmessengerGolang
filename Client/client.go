@@ -41,7 +41,7 @@ func main() {
 }
 
 func Startup(c *forms.Client) {
-	c.ParseProperties(properties_path)
+	c.Properties = c.ParseProperties(properties_path)
 	ConnectWithServices(c)
 	AddForms(c)
 }

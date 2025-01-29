@@ -61,6 +61,9 @@ func (c *Client) AddIndexForm() {
 		c.refresh()
 		c.StartMessaging()
 		c.Pages.SwitchToPage("Chats")
+		if c.token == "" {
+			c.chat.SetText("Must login or register!")
+		}
 	})
 
 	c.Pages.AddPage("Index", c.IndexForm, true, true)
