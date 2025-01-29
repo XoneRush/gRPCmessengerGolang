@@ -11,12 +11,14 @@ service ChatService{
     rpc RemoveMember(Member) returns (Msg);
     rpc ListMembers(Chat) returns (stream Member);
     rpc ListMsgs(Chat) returns (stream Msg);
+    rpc GetChatList(Member) returns (stream Chat);
 }
 
 message Chat{
     repeated Member ListOfMembers = 1;
     string Name = 2;
     string DateOfCreation = 3;
+    int32 ChatID = 4;
 }
 
 message Msg{

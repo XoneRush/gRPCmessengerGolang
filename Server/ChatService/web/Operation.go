@@ -88,14 +88,14 @@ func (a *App) AddMemberToDB(m model.Member_model) error {
 
 // Удаляет участника из бд
 func (a *App) RemoveFromDB(m model.Member_model) error {
-	stmt := "DELETE FROM members WHERE userid = $1"
+	stmt := "DELETE FROM members WHERE userid = $1 AND chatid = $2"
 
 	err := a.checkExistance(m)
 	if err != nil {
 		return err
 	}
 
-	_, err = a.DB.Exec(stmt, m.UserID)
+	_, err = a.DB.Exec(stmt, m.UserID, m.ChatID)
 	if err != nil {
 		return err
 	}
@@ -159,4 +159,32 @@ func (a *App) isMemberInChat(uid int, chatid int) error {
 		return err
 	}
 	return nil
+}
+
+// Получить все чаты, приуореченные к конкретному участнику
+func (a *App) GetChatsFromDB(memberID int32) ([]pb.Chat, error) {
+	stmt := "SELECT c.chatid, c.chat_name FROM chats as c JOIN members as m ON c.chatid = m.chatid WHERE m.userid = $1"
+	var chats []pb.Chat
+	var tmp_name string
+	var tmp_id int
+
+	rows, err := a.DB.Query(stmt, memberID)
+	if err != nil {
+		return nil, err
+	}
+
+	for rows.Next() {
+		err := rows.Scan(&tmp_id, &tmp_name)
+		if err != nil {
+			return nil, err
+		}
+		chat := pb.Chat{
+			Name:   tmp_name,
+			ChatID: int32(tmp_id),
+		}
+
+		chats = append(chats, chat)
+	}
+
+	return chats, nil
 }

@@ -3,7 +3,10 @@ package forms
 import (
 	"context"
 	"errors"
+	"io"
+	"log"
 	"strconv"
+	"time"
 
 	auth "github.com/XoneRush/gRPCmessengerGolang/Server/AuthService/protos"
 	"github.com/golang-jwt/jwt/v5"
@@ -84,7 +87,7 @@ func (c *Client) GetNicknameFromToken() string {
 // Парсинг свойств сделать
 func (c *Client) parseToken() (jwt.MapClaims, error) {
 	token, err := jwt.Parse(c.token, func(token *jwt.Token) (interface{}, error) {
-		return []byte("-"), nil
+		return []byte("d19b71f8942a1d89b1bbb1481e4df6bb770d1c746d41fe61bbf870b8252cebb0bc2f9b3718a25ba5f68119e49bc0b24e8e4b56236b3bce53f7b138f63b1846f1"), nil
 	})
 	if err != nil {
 		return nil, err
@@ -95,3 +98,37 @@ func (c *Client) parseToken() (jwt.MapClaims, error) {
 
 	return nil, errors.New("jwt token isnt valid")
 }
+
+// Старт потока обмена сообщениями
+func (c *Client) StartMessaging() {
+	c.MsgStream, _ = c.ChatClient.SendMessage(context.Background())
+	c.Waitc = make(chan struct{})
+
+	go func() {
+		for {
+			in, err := c.MsgStream.Recv()
+			if err == io.EOF {
+				close(c.Waitc)
+				return
+			}
+			if err != nil {
+				log.Println("Failed to receive a note", false)
+			}
+
+			//msgs
+			currText := c.chat.GetText(false)
+			c.chat.SetText(currText + in.Data + "\n")
+			currTime := c.time.GetText(false)
+			c.time.SetText(currTime + time.Now().Format(time.TimeOnly) + "\n")
+
+		}
+	}()
+}
+
+// func (c *Client) GetChatList() []ChatData{
+// 	stream, err := c.ChatClient.
+
+// 	for {
+// 		chat, err := stream
+// 	}
+// }

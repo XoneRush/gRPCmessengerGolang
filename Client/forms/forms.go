@@ -1,15 +1,12 @@
 package forms
 
 import (
-	"context"
-	"io"
-	"log"
 	"strconv"
-	"time"
 
 	auth "github.com/XoneRush/gRPCmessengerGolang/Server/AuthService/protos"
 	chat "github.com/XoneRush/gRPCmessengerGolang/Server/ChatService/protos"
 	"github.com/rivo/tview"
+	"google.golang.org/grpc"
 )
 
 type Client struct {
@@ -20,9 +17,17 @@ type Client struct {
 	IndexForm    *tview.Form
 	RegisterForm *tview.Form
 	LoginForm    *tview.Form
-	ChatForm     *tview.Form
+	ChatList     *tview.List
 	UserData     UserData
 	token        string
+
+	Chats []ChatData
+
+	MsgStream grpc.BidiStreamingClient[chat.Msg, chat.Msg]
+	Waitc     chan struct{}
+	chat      *tview.TextView
+	dst       int
+	time      *tview.TextView
 }
 
 type UserData struct {
@@ -30,6 +35,11 @@ type UserData struct {
 	Nickname string
 	Login    string
 	Password string
+}
+
+type ChatData struct {
+	ID   int32
+	Name string
 }
 
 // Стартовая страничка
@@ -45,8 +55,9 @@ func (c *Client) AddIndexForm() {
 		c.Pages.SwitchToPage("Login page")
 	})
 
-	c.IndexForm.AddButton("Chat page", func() {
-		c.Pages.SwitchToPage("Chat page")
+	c.IndexForm.AddButton("Chats", func() {
+		c.StartMessaging()
+		c.Pages.SwitchToPage("Chats")
 	})
 
 	c.Pages.AddPage("Index", c.IndexForm, true, true)
@@ -109,58 +120,83 @@ func (c *Client) AddLoginForm() {
 	c.Pages.AddPage("Login page", c.LoginForm, true, false)
 }
 
-func (c *Client) AddChatForm() {
-	var msg string = ""
-	var dst int = 1
-	//var chatName string
-	textArea := tview.NewTextArea()
-	textArea.SetSize(10, 50)
-	textArea.SetBorder(true)
-	c.ChatForm.AddFormItem(textArea)
+func (c *Client) AddChatList() {
+	c.ChatList.ShowSecondaryText(false)
+	c.ChatList.SetBorder(true)
+	c.ChatList.SetTitle("Chat list")
 
-	stream, _ := c.ChatClient.SendMessage(context.Background())
-	waitc := make(chan struct{})
+	c.ChatList.InsertItem(0, "FR, god i hate those lists", "", 0, func() {
+		c.dst = 1
+	})
+	c.ChatList.InsertItem(0, "2", "", 0, func() {
 
-	go func() {
-		for {
-			in, err := stream.Recv()
-			if err == io.EOF {
-				close(waitc)
-				return
-			}
-			if err != nil {
-				log.Println("Failed to receive a note", false)
-			}
+	})
+	c.ChatList.InsertItem(0, "3", "", 0, func() {
 
-			//msgs
-			currText := textArea.GetText()
-			textArea.SetText(currText+in.Data+"       "+time.Now().Format(time.TimeOnly)+"\n", false)
+	})
 
+	// flex.AddItem(c.ChatList, 0, 1, true)
+	c.Pages.AddPage("Chat list", c.ChatList, true, false)
+}
+
+func (c *Client) AddFlex() {
+	//flexes
+	// flex & list -> subflex & Input -> chatflex & time
+	flex := tview.NewFlex()
+	subflex := tview.NewFlex()
+	chatflex := tview.NewFlex()
+	chatflex.SetBorder(true)
+	chatflex.SetTitle("Chat")
+
+	c.chat = c.AddChatArea(30, 50)
+	c.time = tview.NewTextView()
+
+	//chatflex
+	chatflex.AddItem(c.chat, 0, 3, true)
+	chatflex.AddItem(c.time, 0, 1, true)
+
+	//subflex
+	subflex.SetDirection(tview.FlexRow)
+	subflex.AddItem(chatflex, 0, 4, true)
+	subflex.AddItem(c.AddInput(), 0, 1, true)
+
+	//flex
+	flex.AddItem(subflex, 0, 3, true)
+	flex.AddItem(c.ChatList, 0, 1, true)
+
+	c.Pages.AddPage("Chats", flex, true, false)
+
+}
+
+func (c *Client) AddChatArea(rows int, cols int) *tview.TextView {
+	chatArea := tview.NewTextView()
+	chatArea.SetSize(rows, cols)
+
+	return chatArea
+}
+
+func (c *Client) AddInput() *tview.Form {
+	form := tview.NewForm()
+	form.SetBorder(true)
+	var msg string
+
+	form.AddInputField("Message", "", 75, nil, func(text string) {
+		msg = text
+	})
+
+	form.AddButton("->", func() {
+		//Делается запрос на сервер с отправлением сообщения Dst - получаетль (id чата), src - отправитель, data - сообщение
+		if err := c.MsgStream.Send(&chat.Msg{Dst: int32(c.dst), Src: int32(c.UserData.ID), Data: msg}); err != nil {
+			c.chat.SetText("error!")
 		}
-	}()
-
-	//Выбрать имя чата (имя получателя)
-	c.ChatForm.AddInputField("Which chat?", "", 20, nil, func(name string) {
-		//chatName = name
-		dst, _ = strconv.Atoi(name)
 	})
 
-	//Само сообщение
-	c.ChatForm.AddInputField("Message", "", 20, nil, func(message string) {
-		msg = message
-	})
-
-	//Отправить
-	c.ChatForm.AddButton("Send!", func() {
-		//логика отправки
-		if err := stream.Send(&chat.Msg{Dst: int32(dst), Src: int32(c.UserData.ID), Data: msg}); err != nil {
-			textArea.SetText("error!", false)
-		}
-	})
-
-	c.ChatForm.AddButton("Back", func() {
+	//При выходе в меню поток обмена сообщениями закрывается
+	form.AddButton("Back", func() {
+		c.MsgStream.CloseSend()
+		<-c.Waitc
 		c.Pages.SwitchToPage("Index")
 	})
 
-	c.Pages.AddPage("Chat page", c.ChatForm, true, false)
+	return form
 }

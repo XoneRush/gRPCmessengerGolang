@@ -25,6 +25,7 @@ const (
 	ChatService_RemoveMember_FullMethodName = "/ChatService.ChatService/RemoveMember"
 	ChatService_ListMembers_FullMethodName  = "/ChatService.ChatService/ListMembers"
 	ChatService_ListMsgs_FullMethodName     = "/ChatService.ChatService/ListMsgs"
+	ChatService_GetChatList_FullMethodName  = "/ChatService.ChatService/GetChatList"
 )
 
 // ChatServiceClient is the client API for ChatService service.
@@ -37,6 +38,7 @@ type ChatServiceClient interface {
 	RemoveMember(ctx context.Context, in *Member, opts ...grpc.CallOption) (*Msg, error)
 	ListMembers(ctx context.Context, in *Chat, opts ...grpc.CallOption) (grpc.ServerStreamingClient[Member], error)
 	ListMsgs(ctx context.Context, in *Chat, opts ...grpc.CallOption) (grpc.ServerStreamingClient[Msg], error)
+	GetChatList(ctx context.Context, in *Member, opts ...grpc.CallOption) (grpc.ServerStreamingClient[Chat], error)
 }
 
 type chatServiceClient struct {
@@ -128,6 +130,25 @@ func (c *chatServiceClient) ListMsgs(ctx context.Context, in *Chat, opts ...grpc
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type ChatService_ListMsgsClient = grpc.ServerStreamingClient[Msg]
 
+func (c *chatServiceClient) GetChatList(ctx context.Context, in *Member, opts ...grpc.CallOption) (grpc.ServerStreamingClient[Chat], error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	stream, err := c.cc.NewStream(ctx, &ChatService_ServiceDesc.Streams[3], ChatService_GetChatList_FullMethodName, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &grpc.GenericClientStream[Member, Chat]{ClientStream: stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type ChatService_GetChatListClient = grpc.ServerStreamingClient[Chat]
+
 // ChatServiceServer is the server API for ChatService service.
 // All implementations must embed UnimplementedChatServiceServer
 // for forward compatibility.
@@ -138,6 +159,7 @@ type ChatServiceServer interface {
 	RemoveMember(context.Context, *Member) (*Msg, error)
 	ListMembers(*Chat, grpc.ServerStreamingServer[Member]) error
 	ListMsgs(*Chat, grpc.ServerStreamingServer[Msg]) error
+	GetChatList(*Member, grpc.ServerStreamingServer[Chat]) error
 	mustEmbedUnimplementedChatServiceServer()
 }
 
@@ -165,6 +187,9 @@ func (UnimplementedChatServiceServer) ListMembers(*Chat, grpc.ServerStreamingSer
 }
 func (UnimplementedChatServiceServer) ListMsgs(*Chat, grpc.ServerStreamingServer[Msg]) error {
 	return status.Errorf(codes.Unimplemented, "method ListMsgs not implemented")
+}
+func (UnimplementedChatServiceServer) GetChatList(*Member, grpc.ServerStreamingServer[Chat]) error {
+	return status.Errorf(codes.Unimplemented, "method GetChatList not implemented")
 }
 func (UnimplementedChatServiceServer) mustEmbedUnimplementedChatServiceServer() {}
 func (UnimplementedChatServiceServer) testEmbeddedByValue()                     {}
@@ -270,6 +295,17 @@ func _ChatService_ListMsgs_Handler(srv interface{}, stream grpc.ServerStream) er
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type ChatService_ListMsgsServer = grpc.ServerStreamingServer[Msg]
 
+func _ChatService_GetChatList_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(Member)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(ChatServiceServer).GetChatList(m, &grpc.GenericServerStream[Member, Chat]{ServerStream: stream})
+}
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type ChatService_GetChatListServer = grpc.ServerStreamingServer[Chat]
+
 // ChatService_ServiceDesc is the grpc.ServiceDesc for ChatService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -305,6 +341,11 @@ var ChatService_ServiceDesc = grpc.ServiceDesc{
 		{
 			StreamName:    "ListMsgs",
 			Handler:       _ChatService_ListMsgs_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "GetChatList",
+			Handler:       _ChatService_GetChatList_Handler,
 			ServerStreams: true,
 		},
 	},

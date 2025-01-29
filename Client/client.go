@@ -17,8 +17,8 @@ func main() {
 		IndexForm:    tview.NewForm(),
 		RegisterForm: tview.NewForm(),
 		LoginForm:    tview.NewForm(),
-		ChatForm:     tview.NewForm(),
 		Pages:        tview.NewPages(),
+		ChatList:     tview.NewList(),
 		UserData:     forms.UserData{},
 	}
 
@@ -30,7 +30,7 @@ func main() {
 
 	cli.App.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
 		if event.Rune() == 123 {
-			cli.App.Stop()
+			cli.Pages.SwitchToPage("Index")
 		}
 		return event
 	})
@@ -51,5 +51,6 @@ func AddForms(c *forms.Client) {
 	c.AddIndexForm()
 	c.AddRegisterForm()
 	c.AddLoginForm()
-	c.AddChatForm()
+	c.AddChatList()
+	c.AddFlex()
 }

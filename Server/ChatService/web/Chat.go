@@ -115,6 +115,21 @@ func (a *App) SendMessage(stream pb.ChatService_SendMessageServer) error {
 	}
 }
 
+func (a *App) GetChatList(mmbr *pb.Member, stream grpc.ServerStreamingServer[pb.Chat]) error {
+	//Получение всех чатов, которые есть у пользователя
+	chats, err := a.GetChatsFromDB(mmbr.GetUserID())
+	if err != nil {
+		return err
+	}
+	for _, chat := range chats {
+		if err := stream.Send(&chat); err != nil {
+			a.log.Error(err.Error())
+		}
+	}
+
+	return nil
+}
+
 // Добавляет участника в чат (указанный в поле chatid структуры)
 func (a *App) AddMember(ctx context.Context, member *pb.Member) (*pb.Msg, error) {
 	m := ConvertPBtoModel(member)
